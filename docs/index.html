@@ -7,69 +7,73 @@
   <meta name="color-scheme" content="light dark" />
   <style>
     :root{
-      --bg: #0b0c10;
-      --card: #111318;
-      --muted: #9aa3b2;
-      --text: #e8ecf1;
-      --brand: #6aa6ff;
-      --brand-2: #8a7bff;
-      --border: #1f2530;
+      --bg:#0b0c10; --card:#111318; --muted:#9aa3b2; --text:#e8ecf1;
+      --brand:#6aa6ff; --brand2:#8a7bff; --border:#1f2530;
       --ok:#2ecc71; --warn:#f39c12; --err:#e74c3c;
-      --shadow: 0 6px 24px rgba(0,0,0,.25), 0 2px 6px rgba(0,0,0,.2);
+      --shadow:0 6px 24px rgba(0,0,0,.25),0 2px 6px rgba(0,0,0,.2);
+      --radius:16px;
     }
     @media (prefers-color-scheme: light){
       :root{
         --bg:#f7f8fb; --card:#ffffff; --text:#0e1116; --muted:#5b6573;
-        --brand:#3b82f6; --brand-2:#7c3aed; --border:#e8ebf0;
-        --shadow: 0 6px 24px rgba(16,24,40,.07), 0 2px 6px rgba(16,24,40,.06);
+        --brand:#3b82f6; --brand2:#7c3aed; --border:#e8ebf0;
+        --shadow:0 6px 24px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.06);
       }
     }
     *{box-sizing:border-box}
-    body{
-      margin:0; background:var(--bg); color:var(--text);
-      font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-    }
-    .wrap{max-width:960px; margin:0 auto; padding:32px 20px 56px;}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--text);
+      font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
+    .wrap{max-width:1080px;margin:0 auto;padding:32px 20px 56px;}
     header{
-      border-radius:18px; padding:28px 22px; margin:24px 0 28px;
-      background: linear-gradient(135deg, color-mix(in oklab, var(--brand) 35%, transparent) 0%, transparent 60%),
-                  linear-gradient(225deg, color-mix(in oklab, var(--brand-2) 35%, transparent) 0%, transparent 50%),
-                  var(--card);
-      border:1px solid var(--border);
-      box-shadow: var(--shadow);
+      border-radius:22px;padding:28px 24px;margin:12px 0 26px;border:1px solid var(--border);
+      background:
+        linear-gradient(135deg,color-mix(in oklab,var(--brand) 35%,transparent) 0%,transparent 60%),
+        linear-gradient(225deg,color-mix(in oklab,var(--brand2) 35%,transparent) 0%,transparent 55%),
+        var(--card);
+      box-shadow:var(--shadow)
     }
-    h1{margin:0 0 6px; font-weight:800; letter-spacing:.3px}
-    .sub{color:var(--muted); margin:0}
-    .row{display:grid; gap:16px; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); margin-top:18px}
+    h1{margin:0 0 6px;font-weight:800;letter-spacing:.2px}
+    .sub{margin:0;color:var(--muted)}
+    .grid{display:grid;gap:18px;grid-template-columns:repeat(12,1fr)}
+    .col{grid-column:span 12}
+    @media (min-width:900px){ .col-4{grid-column:span 4} }
     .card{
-      background:var(--card); border:1px solid var(--border); border-radius:16px; padding:18px 18px 16px;
-      box-shadow: var(--shadow); display:flex; flex-direction:column; gap:8px; min-height:142px;
+      display:flex;flex-direction:column;gap:10px;min-height:250px;
+      border:1px solid var(--border);background:var(--card);border-radius:var(--radius);padding:18px;
+      box-shadow:var(--shadow)
     }
-    .eyebrow{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.12em}
-    .title{display:flex; align-items:center; gap:10px; margin:2px 0 4px}
-    .title svg{width:22px; height:22px}
-    p{margin:0; color:var(--muted)}
-    a.btn{
-      display:inline-flex; align-items:center; gap:8px; margin-top:auto;
-      padding:10px 14px; border-radius:10px; text-decoration:none; font-weight:600;
-      background: color-mix(in oklab, var(--brand) 18%, var(--card));
-      border:1px solid color-mix(in oklab, var(--brand) 40%, var(--border));
-      color:var(--text);
+    .eyebrow{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}
+    .title{display:flex;align-items:center;gap:10px;margin:2px 0 4px}
+    .title svg{width:22px;height:22px}
+    p{margin:0;color:var(--muted)}
+    .cta{
+      margin-top:auto;display:block;border-radius:14px;overflow:hidden;border:1px solid var(--border);
+      background:color-mix(in oklab,var(--brand) 15%,var(--card));
+      text-decoration:none;color:var(--text);box-shadow:inset 0 0 0 0 rgba(255,255,255,0);
+      transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
     }
-    a.btn:hover{transform:translateY(-1px)}
-    code, .chip{
-      background: color-mix(in oklab, var(--card) 70%, #0000);
-      border:1px solid var(--border);
-      padding:2px 8px; border-radius:8px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    }
-    .chip{display:inline-flex; align-items:center; gap:6px; font-size:12px; padding:4px 8px; margin-left:8px}
-    .chip.ok{border-color:color-mix(in oklab, var(--ok) 55%, var(--border)); color:var(--ok)}
-    .chip.warn{border-color:color-mix(in oklab, var(--warn) 55%, var(--border)); color:var(--warn)}
-    .chip.err{border-color:color-mix(in oklab, var(--err) 55%, var(--border)); color:var(--err)}
-    footer{margin-top:28px; color:var(--muted); display:flex; gap:12px; flex-wrap:wrap; align-items:center}
-    .links{display:flex; gap:12px; flex-wrap:wrap}
-    .inline{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+    .cta:focus-visible{outline:3px solid color-mix(in oklab,var(--brand) 55%, transparent)}
+    .cta:hover{transform:translateY(-1px);border-color:color-mix(in oklab,var(--brand) 40%,var(--border))}
+    .cta-inner{display:flex;justify-content:space-between;align-items:center;padding:16px 18px}
+    .cta b{font-size:16px}
+    .cta svg{width:40px;height:40px;opacity:.9}
+    code{background:color-mix(in oklab,var(--card) 70%,#0000);border:1px solid var(--border);
+      padding:3px 8px;border-radius:8px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:4px 8px;border-radius:999px;
+      border:1px solid var(--border);margin-left:8px}
+    .ok{border-color:color-mix(in oklab,var(--ok) 55%,var(--border));color:var(--ok)}
+    .warn{border-color:color-mix(in oklab,var(--warn) 55%,var(--border));color:var(--warn)}
+    .err{border-color:color-mix(in oklab,var(--err) 55%,var(--border));color:var(--err)}
+    footer{margin-top:28px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
     .muted{color:var(--muted)}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    button.icon{
+      border:1px solid var(--border);background:transparent;color:inherit;border-radius:10px;
+      padding:6px 10px;cursor:pointer;display:inline-flex;gap:6px;align-items:center
+    }
+    button.icon:hover{background:color-mix(in oklab,var(--card) 85%,#0000)}
+    button.icon:focus-visible{outline:3px solid color-mix(in oklab,var(--brand) 50%, transparent)}
   </style>
 </head>
 <body>
@@ -79,82 +83,99 @@
       <p class="sub">Reverse-engineered reference for Skylight endpoints. Community-maintained, <em>unofficial</em>.</p>
     </header>
 
-    <section>
-      <div class="row">
+    <section class="grid">
+      <!-- Swagger -->
+      <div class="col col-4">
         <div class="card">
           <div class="eyebrow">Interactive</div>
           <div class="title">
-            <!-- lightning icon -->
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg>
             <h2 style="margin:0;font-size:18px">Swagger UI</h2>
           </div>
           <p>“Try it” interface for exploring endpoints and schemas.</p>
-          <a class="btn" href="./swagger.html" aria-label="Open Swagger UI">
-            Open Swagger
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M7 7h10v10"/></svg>
+          <a class="cta" href="./swagger.html" aria-label="Open Swagger UI">
+            <span class="cta-inner">
+              <b>Open Swagger</b>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M7 7h10v10"/></svg>
+            </span>
           </a>
         </div>
+      </div>
 
+      <!-- ReDoc -->
+      <div class="col col-4">
         <div class="card">
           <div class="eyebrow">Reference</div>
           <div class="title">
-            <!-- book icon -->
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 4v15.5A2.5 2.5 0 0 0 6.5 22H20V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2z"/></svg>
             <h2 style="margin:0;font-size:18px">ReDoc</h2>
           </div>
           <p>Readable, single-page docs for browsing the API.</p>
-          <a class="btn" href="./redoc.html" aria-label="Open ReDoc">
-            Open ReDoc
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M7 7h10v10"/></svg>
+          <a class="cta" href="./redoc.html" aria-label="Open ReDoc">
+            <span class="cta-inner">
+              <b>Open ReDoc</b>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M7 7h10v10"/></svg>
+            </span>
           </a>
         </div>
+      </div>
 
+      <!-- Spec -->
+      <div class="col col-4">
         <div class="card">
           <div class="eyebrow">Spec</div>
           <div class="title">
-            <!-- file icon -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M14 2v6h6"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <path stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M14 2v6h6"/>
+            </svg>
             <h2 style="margin:0;font-size:18px">OpenAPI YAML</h2>
+            <span id="specChip" class="chip">Checking…</span>
           </div>
-          <p class="inline">
-            <span>Canonical spec file.</span>
-            <span id="spec-chip" class="chip">Checking…</span>
-          </p>
-          <p style="margin-top:8px">
-            <code><a href="/Skylight/openapi/openapi.yaml">/Skylight/openapi/openapi.yaml</a></code>
-          </p>
+          <p>Canonical spec file.</p>
+          <div class="row" style="margin-top:10px">
+            <code id="specUrlText">/Skylight/openapi/openapi.yaml</code>
+            <button class="icon" id="copyBtn" type="button" title="Copy URL">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              Copy
+            </button>
+            <a class="icon" href="/Skylight/openapi/openapi.yaml" target="_blank" rel="noopener">Open</a>
+          </div>
         </div>
       </div>
     </section>
 
     <footer>
-      <div class="links">
-        <a class="muted" href="https://github.com/ColinScattergood/Skylight" target="_blank" rel="noopener">GitHub</a>
-        <span aria-hidden="true">•</span>
-        <span class="muted">Community reference — not affiliated with Skylight</span>
-      </div>
+      <a class="muted" href="https://github.com/ColinScattergood/Skylight" target="_blank" rel="noopener">GitHub</a>
+      <span aria-hidden="true">•</span>
+      <span class="muted">Community reference — not affiliated with Skylight</span>
     </footer>
   </div>
 
   <script>
-    // Tiny status check for the spec; avoids the “is this working?” confusion.
+    // Status chip + copy button
     (async () => {
-      const chip = document.getElementById('spec-chip');
+      const chip = document.getElementById('specChip');
       const url = 'https://colinscattergood.github.io/Skylight/openapi/openapi.yaml';
       try {
         const res = await fetch(url, { method:'HEAD', cache:'no-store' });
-        if (res.ok) {
-          chip.textContent = 'Spec OK';
-          chip.classList.add('ok');
-        } else {
-          chip.textContent = 'Spec unavailable';
-          chip.classList.add('warn');
-        }
-      } catch (e) {
-        chip.textContent = 'Spec unreachable';
-        chip.classList.add('err');
+        if (res.ok) { chip.textContent = 'Spec OK'; chip.classList.add('ok'); }
+        else { chip.textContent = 'Spec unavailable'; chip.classList.add('warn'); }
+      } catch {
+        chip.textContent = 'Spec unreachable'; chip.classList.add('err');
       }
     })();
+
+    document.getElementById('copyBtn').addEventListener('click', async () => {
+      const txt = document.getElementById('specUrlText').textContent.trim();
+      try {
+        await navigator.clipboard.writeText(location.origin + txt);
+        const btn = document.getElementById('copyBtn');
+        const old = btn.innerHTML;
+        btn.innerHTML = 'Copied!';
+        setTimeout(() => btn.innerHTML = old, 900);
+      } catch {}
+    });
   </script>
 </body>
 </html>
