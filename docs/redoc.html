@@ -1,12 +1,33 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Skylight API — Redoc</title>
+  <title>Unofficial Skylight API — ReDoc</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+  <!-- Optional: small bit of spacing so it doesn't look "blank" while loading -->
+  <style>
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+    #redoc-container { padding: 16px; }
+  </style>
 </head>
 <body>
-<redoc spec-url="/Skylight/openapi/openapi.yaml"></redoc>
+  <div id="redoc-container">Loading docs…</div>
+
+  <!-- Use a widely available CDN; the ReDocly CDN sometimes 403s on GH Pages -->
+  <script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      Redoc.init(
+        // ✅ Use absolute GH Pages URL (avoids missing /Skylight/ prefix issues)
+        'https://colinscattergood.github.io/Skylight/openapi/openapi.yaml',
+        {
+          hideLoading: false,
+          expandResponses: '200,201',
+          scrollYOffset: 60
+        },
+        document.getElementById('redoc-container')
+      );
+    });
+  </script>
 </body>
 </html>
