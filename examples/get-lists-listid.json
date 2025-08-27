@@ -1,0 +1,35 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://app.ourskylight.com/api/frames/REDACTED/lists/REDACTED",
+    "headers": {
+      "Authorization": "Basic REDACTED"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "type": "list",
+        "id": "REDACTED",
+        "attributes": {
+          "label": "Grocery List",
+          "color": "A6A6BE7",
+          "kind": "shopping",
+          "default_grocery_list": true
+        },
+        "relationships": {
+          "list_items": {
+            "data": [
+              {
+                "type": "list_item",
+                "id": "ITEM1"
+              }
+            ]
+          }
+        }
+      },
+      "included": []
+    }
+  }
+}

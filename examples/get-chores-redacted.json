@@ -1,0 +1,41 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://app.ourskylight.com/api/frames/REDACTED/chores?after=2025-08-25&before=2025-08-29&include_late=true&filter=linked_to_profile",
+    "headers": {
+      "Authorization": "Bearer REDACTED",
+      "Accept": "application/json"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "data": [
+        {
+          "type": "chore",
+          "id": "REDACTED-2025-08-25",
+          "attributes": {
+            "summary": "Recycling",
+            "start": "2025-08-25",
+            "is_future": false,
+            "recurring": true,
+            "recurrence_set": "RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=MO;WKST=SU",
+            "start_time": null,
+            "completed_on": null
+          },
+          "relationships": {
+            "category": {
+              "data": {
+                "type": "category",
+                "id": "REDACTED"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

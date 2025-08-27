@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Swagger UI</title>
+  <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css">
+</head>
+<body>
+  <div id="swagger-ui"></div>
+
+  <!-- Scripts must load in order -->
+  <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+  <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-standalone-preset.js"></script>
+
+  <script>
+    window.onload = () => {
+      const ui = SwaggerUIBundle({
+        url: "/Skylight/openapi/openapi.yaml",   // ✅ prefix with repo name
+        dom_id: "#swagger-ui",                   // ✅ matches <div id="swagger-ui">
+        presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
+      });
+      window.ui = ui;
+    };
+  </script>
+</body>
+</html>

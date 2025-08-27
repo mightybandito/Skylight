@@ -1,0 +1,63 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://app.ourskylight.com/api/frames/REDACTED/chores",
+    "headers": {
+      "Authorization": "Basic REDACTED",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "data": {
+        "type": "chore",
+        "attributes": {
+          "summary": "new",
+          "status": "pending",
+          "start": "2025-08-29",
+          "start_time": "10:00",
+          "recurring": false
+        },
+        "relationships": {
+          "category": {
+            "data": {
+              "type": "category",
+              "id": "REDACTED"
+            }
+          }
+        }
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "type": "chore",
+        "id": "REDACTED",
+        "attributes": {
+          "summary": "new",
+          "status": "pending",
+          "start": "2025-08-29",
+          "start_time": "10:00",
+          "recurring": false
+        },
+        "relationships": {
+          "category": {
+            "data": {
+              "type": "category",
+              "id": "REDACTED"
+            }
+          }
+        }
+      },
+      "included": [
+        {
+          "type": "category",
+          "id": "REDACTED",
+          "attributes": {
+            "label": "Dad"
+          }
+        }
+      ]
+    }
+  }
+}

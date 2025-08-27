@@ -1,0 +1,762 @@
+openapi: 3.0.3
+info:
+  title: Unofficial Skylight API (Community Reference)
+  version: 0.3.0
+  description: |
+    Reverse-engineered reference for Skylight endpoints based on observed traffic.
+    JSON:API-style resources are common (type, id, attributes, relationships).
+    **Unofficial**; for research and interoperability. All examples redacted.
+servers:
+  - url: https://app.ourskylight.com
+tags:
+  - name: Frames
+  - name: Chores
+  - name: Categories
+  - name: Devices
+  - name: Lists
+  - name: TaskBox
+  - name: Calendars
+  - name: Rewards
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    basicToken:
+      type: http
+      scheme: basic
+      description: |
+        Observed Authorization header uses an opaque Basic token. Treat as secret.
+
+  schemas:
+    JsonApiResourceId:
+      type: object
+      properties:
+        type:
+          type: string
+        id:
+          type: string
+      required: [type, id]
+
+    # ---- Categories ----
+    CategoryAttributes:
+      type: object
+      properties:
+        color:
+          type: string
+          nullable: true
+          description: Hex color; observed with leading '#'
+          pattern: "^#?[0-9A-Fa-f]{6}$"
+        selected_for_chore_chart:
+          type: boolean
+          nullable: true
+        linked_to_profile:
+          type: boolean
+          nullable: true
+        label:
+          type: string
+          nullable: true
+        profile_pic_url:
+          type: string
+          nullable: true
+      additionalProperties: true
+
+    CategoryResource:
+      type: object
+      properties:
+        type:
+          type: string
+          description: JSON:API resource type
+          enum: [category]
+        id:
+          type: string
+        attributes:
+          $ref: '#/components/schemas/CategoryAttributes'
+      required: [type, id]
+
+    # ---- Chores ----
+    ChoreAttributes:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: true
+        summary:
+          type: string
+        status:
+          type: string
+          description: Known values include 'pending'
+        start:
+          type: string
+          format: date
+        start_time:
+          type: string
+          nullable: true
+          description: e.g., '10:00'
+        completed_on:
+          type: string
+          nullable: true
+        is_future:
+          type: boolean
+          nullable: true
+        recurring:
+          type: boolean
+        recurring_until:
+          type: string
+          nullable: true
+        recurrence_set:
+          type: string
+          nullable: true
+          description: RRULE-like string
+        reward_points:
+          type: integer
+          nullable: true
+        emoji_icon:
+          type: string
+          nullable: true
+        routine:
+          type: boolean
+          nullable: true
+        position:
+          type: integer
+          nullable: true
+      additionalProperties: true
+
+    ChoreRelationships:
+      type: object
+      properties:
+        category:
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/JsonApiResourceId'
+
+    ChoreResource:
+      type: object
+      properties:
+        type:
+          type: string
+          description: JSON:API resource type
+          enum: [chore]
+        id:
+          type: string
+        attributes:
+          $ref: '#/components/schemas/ChoreAttributes'
+        relationships:
+          $ref: '#/components/schemas/ChoreRelationships'
+      required: [type, id, attributes]
+
+    # ---- Devices ----
+    DeviceAttributes:
+      type: object
+      description: Placeholder until a 200 body is captured.
+      additionalProperties: true
+
+    DeviceResource:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [device]
+        id:
+          type: string
+        attributes:
+          $ref: '#/components/schemas/DeviceAttributes'
+      required: [type, id]
+
+    # ---- Lists ----
+    ListAttributes:
+      type: object
+      properties:
+        label:
+          type: string
+        color:
+          type: string
+          nullable: true
+          description: Hex color; observed with leading '#'
+          pattern: "^#?[0-9A-Fa-f]{6}$"
+        kind:
+          type: string
+          description: "Known values: shopping or to_do"
+        default_grocery_list:
+          type: boolean
+      additionalProperties: true
+
+    ListRelationships:
+      type: object
+      properties:
+        list_items:
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/JsonApiResourceId'
+
+    ListResource:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [list]
+        id:
+          type: string
+        attributes:
+          $ref: '#/components/schemas/ListAttributes'
+        relationships:
+          $ref: '#/components/schemas/ListRelationships'
+      required: [type, id, attributes]
+
+    ListItemAttributes:
+      type: object
+      properties:
+        label:
+          type: string
+        status:
+          type: string
+          enum: [pending, completed]
+        section:
+          type: string
+          nullable: true
+        position:
+          type: integer
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+      additionalProperties: true
+
+    ListItemResource:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [list_item]
+        id:
+          type: string
+        attributes:
+          $ref: '#/components/schemas/ListItemAttributes'
+      required: [type, id]
+
+    # ---- Task Box Items ----
+    TaskBoxItemAttributes:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: true
+        summary:
+          type: string
+        emoji_icon:
+          type: string
+          nullable: true
+        routine:
+          type: boolean
+          nullable: true
+        reward_points:
+          type: integer
+          nullable: true
+      additionalProperties: true
+
+    TaskBoxItemResource:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [task_box_item]
+        id:
+          type: string
+        attributes:
+          $ref: '#/components/schemas/TaskBoxItemAttributes'
+      required: [type, id, attributes]
+
+    # ---- Frames (minimal) ----
+    FrameAttributes:
+      type: object
+      additionalProperties: true
+
+    FrameResource:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [frame]
+        id:
+          type: string
+        attributes:
+          $ref: '#/components/schemas/FrameAttributes'
+      required: [type, id]
+
+    # ---- Calendars ----
+    SourceCalendarAttributes:
+      type: object
+      additionalProperties: true
+
+    SourceCalendarResource:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [source_calendar]
+        id:
+          type: string
+        attributes:
+          $ref: '#/components/schemas/SourceCalendarAttributes'
+      required: [type, id]
+
+    CalendarEventAttributes:
+      type: object
+      description: Placeholder; fields will be added as captured.
+      additionalProperties: true
+
+    CalendarEventResource:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [calendar_event]
+        id:
+          type: string
+        attributes:
+          $ref: '#/components/schemas/CalendarEventAttributes'
+      required: [type, id]
+
+    # ---- Rewards ----
+    RewardAttributes:
+      type: object
+      additionalProperties: true
+
+    RewardResource:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [reward]
+        id:
+          type: string
+        attributes:
+          $ref: '#/components/schemas/RewardAttributes'
+      required: [type, id]
+
+    RewardPointAttributes:
+      type: object
+      additionalProperties: true
+
+    RewardPointResource:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [reward_point]
+        id:
+          type: string
+        attributes:
+          $ref: '#/components/schemas/RewardPointAttributes'
+      required: [type, id]
+
+paths:
+  # ---- Frames ----
+  /api/frames/{frameId}:
+    get:
+      tags: [Frames]
+      summary: Get frame by id
+      security:
+        - basicToken: []
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: frameId
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FrameResource'
+        '304':
+          description: Not Modified
+
+  # ---- Chores ----
+  /api/frames/{frameId}/chores:
+    get:
+      tags: [Chores]
+      summary: List chores for a frame in a date range
+      description: |
+        Observed query params: after, before (YYYY-MM-DD), include_late (bool), filter=linked_to_profile.
+      security:
+        - basicToken: []
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: frameId
+          required: true
+          schema: { type: string }
+        - in: query
+          name: after
+          schema: { type: string, format: date }
+        - in: query
+          name: before
+          schema: { type: string, format: date }
+        - in: query
+          name: include_late
+          schema: { type: boolean }
+        - in: query
+          name: filter
+          schema:
+            type: string
+            enum: [linked_to_profile]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/ChoreResource' }
+                  included:
+                    type: array
+                    items: { $ref: '#/components/schemas/CategoryResource' }
+        '304':
+          description: Not Modified
+    post:
+      tags: [Chores]
+      summary: Create a chore
+      security:
+        - basicToken: []
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: frameId
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum: [chore]
+                    attributes:
+                      $ref: '#/components/schemas/ChoreAttributes'
+                    relationships:
+                      $ref: '#/components/schemas/ChoreRelationships'
+                  required: [type, attributes]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/ChoreResource' }
+                  included:
+                    type: array
+                    items: { $ref: '#/components/schemas/CategoryResource' }
+
+  # ---- Categories ----
+  /api/frames/{frameId}/categories:
+    get:
+      tags: [Categories]
+      summary: List categories
+      security:
+        - basicToken: []
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: frameId
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/CategoryResource' }
+        '304':
+          description: Not Modified
+
+  # ---- Devices ----
+  /api/frames/{frameId}/devices:
+    get:
+      tags: [Devices]
+      summary: List devices
+      security:
+        - basicToken: []
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: frameId
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/DeviceResource' }
+        '304':
+          description: Not Modified
+
+  # ---- Lists ----
+  /api/frames/{frameId}/lists:
+    get:
+      tags: [Lists]
+      summary: List lists
+      security:
+        - basicToken: []
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: frameId
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/ListResource' }
+        '304':
+          description: Not Modified
+
+  /api/frames/{frameId}/lists/{listId}:
+    get:
+      tags: [Lists]
+      summary: Get list by id
+      security:
+        - basicToken: []
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: frameId
+          required: true
+          schema: { type: string }
+        - in: path
+          name: listId
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/ListResource' }
+                  meta:
+                    type: object
+                    properties:
+                      sections:
+                        type: array
+                        items: { type: object }
+                  included:
+                    type: array
+                    items: { $ref: '#/components/schemas/ListItemResource' }
+
+  # ---- Task Box ----
+  /api/frames/{frameId}/task_box/items:
+    post:
+      tags: [TaskBox]
+      summary: Create a task box item
+      security:
+        - basicToken: []
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: frameId
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum: [task_box_item]
+                    attributes:
+                      $ref: '#/components/schemas/TaskBoxItemAttributes'
+                  required: [type, attributes]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/TaskBoxItemResource' }
+
+  # ---- Calendars ----
+  /api/frames/{frameId}/source_calendars:
+    get:
+      tags: [Calendars]
+      summary: List source calendars
+      security:
+        - basicToken: []
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: frameId
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/SourceCalendarResource' }
+        '304':
+          description: Not Modified
+
+  /api/frames/{frameId}/calendar_events:
+    get:
+      tags: [Calendars]
+      summary: List calendar events for a date range
+      security:
+        - basicToken: []
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: frameId
+          required: true
+          schema: { type: string }
+        - in: query
+          name: date_min
+          required: true
+          schema: { type: string, format: date }
+        - in: query
+          name: date_max
+          required: true
+          schema: { type: string, format: date }
+        - in: query
+          name: timezone
+          required: false
+          schema: { type: string }
+        - in: query
+          name: include
+          required: false
+          schema:
+            type: string
+            description: "CSV: categories,calendar_account,event_notification_setting"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/CalendarEventResource' }
+                  included:
+                    type: array
+                    items:
+                      oneOf:
+                        - $ref: '#/components/schemas/CategoryResource'
+                        - $ref: '#/components/schemas/SourceCalendarResource'
+        '304':
+          description: Not Modified
+
+  # ---- Rewards ----
+  /api/frames/{frameId}/rewards:
+    get:
+      tags: [Rewards]
+      summary: List rewards
+      security:
+        - basicToken: []
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: frameId
+          required: true
+          schema: { type: string }
+        - in: query
+          name: redeemed_at_min
+          required: false
+          schema: { type: string, format: date-time }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/RewardResource' }
+        '304':
+          description: Not Modified
+
+  /api/frames/{frameId}/reward_points:
+    get:
+      tags: [Rewards]
+      summary: List reward points
+      security:
+        - basicToken: []
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: frameId
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/RewardPointResource' }
+        '304':
+          description: Not Modified
