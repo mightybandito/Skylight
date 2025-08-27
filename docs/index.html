@@ -4,27 +4,157 @@
   <meta charset="utf-8" />
   <title>Unofficial Skylight API — Docs</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 2rem; line-height: 1.5; }
-    a { text-decoration: none; }
-    .card { border: 1px solid #eee; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
-    h1 { margin-top: 0; }
-    code { background: #f6f8fa; padding: 2px 6px; border-radius: 6px; }
+    :root{
+      --bg: #0b0c10;
+      --card: #111318;
+      --muted: #9aa3b2;
+      --text: #e8ecf1;
+      --brand: #6aa6ff;
+      --brand-2: #8a7bff;
+      --border: #1f2530;
+      --ok:#2ecc71; --warn:#f39c12; --err:#e74c3c;
+      --shadow: 0 6px 24px rgba(0,0,0,.25), 0 2px 6px rgba(0,0,0,.2);
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f7f8fb; --card:#ffffff; --text:#0e1116; --muted:#5b6573;
+        --brand:#3b82f6; --brand-2:#7c3aed; --border:#e8ebf0;
+        --shadow: 0 6px 24px rgba(16,24,40,.07), 0 2px 6px rgba(16,24,40,.06);
+      }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+    .wrap{max-width:960px; margin:0 auto; padding:32px 20px 56px;}
+    header{
+      border-radius:18px; padding:28px 22px; margin:24px 0 28px;
+      background: linear-gradient(135deg, color-mix(in oklab, var(--brand) 35%, transparent) 0%, transparent 60%),
+                  linear-gradient(225deg, color-mix(in oklab, var(--brand-2) 35%, transparent) 0%, transparent 50%),
+                  var(--card);
+      border:1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    h1{margin:0 0 6px; font-weight:800; letter-spacing:.3px}
+    .sub{color:var(--muted); margin:0}
+    .row{display:grid; gap:16px; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); margin-top:18px}
+    .card{
+      background:var(--card); border:1px solid var(--border); border-radius:16px; padding:18px 18px 16px;
+      box-shadow: var(--shadow); display:flex; flex-direction:column; gap:8px; min-height:142px;
+    }
+    .eyebrow{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.12em}
+    .title{display:flex; align-items:center; gap:10px; margin:2px 0 4px}
+    .title svg{width:22px; height:22px}
+    p{margin:0; color:var(--muted)}
+    a.btn{
+      display:inline-flex; align-items:center; gap:8px; margin-top:auto;
+      padding:10px 14px; border-radius:10px; text-decoration:none; font-weight:600;
+      background: color-mix(in oklab, var(--brand) 18%, var(--card));
+      border:1px solid color-mix(in oklab, var(--brand) 40%, var(--border));
+      color:var(--text);
+    }
+    a.btn:hover{transform:translateY(-1px)}
+    code, .chip{
+      background: color-mix(in oklab, var(--card) 70%, #0000);
+      border:1px solid var(--border);
+      padding:2px 8px; border-radius:8px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    .chip{display:inline-flex; align-items:center; gap:6px; font-size:12px; padding:4px 8px; margin-left:8px}
+    .chip.ok{border-color:color-mix(in oklab, var(--ok) 55%, var(--border)); color:var(--ok)}
+    .chip.warn{border-color:color-mix(in oklab, var(--warn) 55%, var(--border)); color:var(--warn)}
+    .chip.err{border-color:color-mix(in oklab, var(--err) 55%, var(--border)); color:var(--err)}
+    footer{margin-top:28px; color:var(--muted); display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+    .links{display:flex; gap:12px; flex-wrap:wrap}
+    .inline{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+    .muted{color:var(--muted)}
   </style>
 </head>
 <body>
-  <h1>Unofficial Skylight API — Docs</h1>
-  <p>Choose your viewer:</p>
-  <div class="card">
-    <h2><a href="./swagger.html">Swagger UI</a></h2>
-    <p>Interactive “try it” interface (great for exploring endpoints).</p>
+  <div class="wrap">
+    <header>
+      <h1>Unofficial Skylight API</h1>
+      <p class="sub">Reverse-engineered reference for Skylight endpoints. Community-maintained, <em>unofficial</em>.</p>
+    </header>
+
+    <section>
+      <div class="row">
+        <div class="card">
+          <div class="eyebrow">Interactive</div>
+          <div class="title">
+            <!-- lightning icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg>
+            <h2 style="margin:0;font-size:18px">Swagger UI</h2>
+          </div>
+          <p>“Try it” interface for exploring endpoints and schemas.</p>
+          <a class="btn" href="./swagger.html" aria-label="Open Swagger UI">
+            Open Swagger
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="eyebrow">Reference</div>
+          <div class="title">
+            <!-- book icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 4v15.5A2.5 2.5 0 0 0 6.5 22H20V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2z"/></svg>
+            <h2 style="margin:0;font-size:18px">ReDoc</h2>
+          </div>
+          <p>Readable, single-page docs for browsing the API.</p>
+          <a class="btn" href="./redoc.html" aria-label="Open ReDoc">
+            Open ReDoc
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="eyebrow">Spec</div>
+          <div class="title">
+            <!-- file icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M14 2v6h6"/></svg>
+            <h2 style="margin:0;font-size:18px">OpenAPI YAML</h2>
+          </div>
+          <p class="inline">
+            <span>Canonical spec file.</span>
+            <span id="spec-chip" class="chip">Checking…</span>
+          </p>
+          <p style="margin-top:8px">
+            <code><a href="/Skylight/openapi/openapi.yaml">/Skylight/openapi/openapi.yaml</a></code>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="links">
+        <a class="muted" href="https://github.com/ColinScattergood/Skylight" target="_blank" rel="noopener">GitHub</a>
+        <span aria-hidden="true">•</span>
+        <span class="muted">Community reference — not affiliated with Skylight</span>
+      </div>
+    </footer>
   </div>
-  <div class="card">
-    <h2><a href="./redoc.html">Redoc</a></h2>
-    <p>Readable reference-style docs (great for browsing).</p>
-  </div>
-<p><strong>Spec:</strong>
-  <code><a href="/Skylight/openapi/openapi.yaml">openapi/openapi.yaml</a></code>
-</p>
+
+  <script>
+    // Tiny status check for the spec; avoids the “is this working?” confusion.
+    (async () => {
+      const chip = document.getElementById('spec-chip');
+      const url = 'https://colinscattergood.github.io/Skylight/openapi/openapi.yaml';
+      try {
+        const res = await fetch(url, { method:'HEAD', cache:'no-store' });
+        if (res.ok) {
+          chip.textContent = 'Spec OK';
+          chip.classList.add('ok');
+        } else {
+          chip.textContent = 'Spec unavailable';
+          chip.classList.add('warn');
+        }
+      } catch (e) {
+        chip.textContent = 'Spec unreachable';
+        chip.classList.add('err');
+      }
+    })();
+  </script>
 </body>
 </html>
