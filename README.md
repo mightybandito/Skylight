@@ -170,8 +170,8 @@ See **docs/auth.md** for how to capture a token safely.
 ## Interactive Docs
 You can explore the API spec in your browser:
 
-- [Swagger UI](docs/swagger.html) — interactive “try it” interface
-- [Redoc](docs/redoc.html) — clean reference-style docs
+- [Swagger UI](https://mightybandito.github.io/Skylight/swagger.html) — interactive “try it” interface
+- [Redoc](https://mightybandito.github.io/Skylight/redoc.html) — clean reference-style docs
 
 > On GitHub Pages these will be accessible at:  
 > https://`{user}`.github.io/`{repo}`/swagger.html  
